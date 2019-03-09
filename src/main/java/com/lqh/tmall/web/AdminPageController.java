@@ -18,9 +18,10 @@ public class AdminPageController {
         return "admin/listCategory";
     }
 
-    @GetMapping(value = "/admin_category_edit") //接受前台编辑分类信息
+    @GetMapping(value="/admin_category_edit")
     public String editCategory(){
         return "admin/editCategory";
+
     }
 }
 

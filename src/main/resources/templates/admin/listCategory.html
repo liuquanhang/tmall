@@ -8,10 +8,10 @@
     $(function(){
         var data4Vue = {
             uri:'categories',
-            bean:{id:0,name:''},
-            pagination:{},
             beans: [],
-            file:null
+            bean: { id: 0, name: ''},
+            pagination:{},
+            file: null
         };
 
         //ViewModel
@@ -26,51 +26,52 @@
                     var url =  this.uri+ "?start="+start;
                     axios.get(url).then(function(response) {
                         vue.pagination = response.data;
-                        vue.beans = response.data.content;
+                        vue.beans = response.data.content   ;
                     });
+                },
+                add: function () {
+                    if(!checkEmpty(this.bean.name, "分类名称"))
+                        return;
+                    if(!checkEmpty(this.file, "分类图片"))
+                        return;
+                    var url = this.uri;
+
+                    //axios.js 上传文件要用 formData 这种方式
+                    var formData = new FormData();
+                    formData.append("image", this.file);
+                    formData.append("name", this.bean.name);
+                    axios.post(url,formData).then(function(response){
+                        vue.list(0);
+                        vue.bean = { id: 0, name: '', hp: '0'};
+                        $("#categoryPic").val('');
+                        vue.file = null;
+                    });
+                },
+                deleteBean: function (id) {
+                    if(!checkDeleteLink())
+                        return;
+                    var url = this.uri+"/"+id;
+                    axios.delete(url).then(function(response){
+                        if(0!=response.data.length){
+                            alert(response.data);
+                        }
+                        else{
+                            vue.list(0);
+                        }
+                    });
+                },
+                getFile: function (event) {
+                    this.file = event.target.files[0];
                 },
                 jump: function(page){
                     jump(page,vue); //定义在adminHeader.html 中
                 },
                 jumpByNumber: function(start){
                     jumpByNumber(start,vue);
-                },
-                // 当上传控件选中某个本地文件的时候，这个文件对象就会保存在data4Vue.file 上
-                getFile: function(event){
-                    this.file = event.target.files[0];
-                },
-                add: function(){
-                    if(!checkEmpty(this.bean.name,"分类名称"))
-                        return;
-                    if(!checkEmpty(this.file,"分类图片"))
-                        return;
-                    var url = this.uri;
-                    var formData = new FormData();
-                    formData.append("image",this.file);
-                    formData.append("name",this.bean.name);
-                    axios.post(url,formData).then(function (response) {
-                        vue.list(0);
-                        vue.bean = {id:0,name:'',hp:'0'};
-                        $("#categoryPic").val('');
-                        vue.file = null;
-                    })
-                },
-                deleteBean:function(id){
-                    if(!checkDeleteLink())
-                        return;
-                    var url = this.uri+"/"+id;
-                    axios.delete(url).then(function (response) {
-                        if(0!=response.data.length){
-                            alert(response.data);
-                        }else{
-                            vue.list(0);
-                        }
-                    });
-                },
+                }
             }
         });
     });
-
 </script>
 <div id="workingArea" >
     <h1 class="label label-info" >分类管理</h1>

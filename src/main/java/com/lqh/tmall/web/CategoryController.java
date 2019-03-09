@@ -55,6 +55,23 @@ public class CategoryController {
         file.delete();  //删除图片
         return null;
     }
+
+    @GetMapping("/categories/{id}")
+    public Category get(@PathVariable("id") int id) {
+        Category bean=categoryService.get(id);
+        return bean;
+    }
+
+    @PutMapping("/categories/{id}")  //前台以ajax函数put方式传回数据
+    public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
+        String name = request.getParameter("name"); //获取请求中的name信息
+        bean.setName(name);  //修改商品名称
+        categoryService.update(bean);  //将商品信息更新至数据库
+        if(image!=null){  //图片不为空则上传图片
+            saveOrUpdateImageFile(bean,image,request);
+        }
+        return  bean;
+    }
 }
 
 
