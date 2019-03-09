@@ -28,6 +28,7 @@ public class CategoryController {
         return page;
     }
 
+    //接受前台上传的图片,添加的分类信息，请求方式为post，调用saveOrUpdateImageFile保存图片
     @PostMapping("/categories")
     public Object add(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         categoryService.add(bean);
@@ -35,22 +36,23 @@ public class CategoryController {
         return bean;
     }
 
+    //上传并保存图片
     public void saveOrUpdateImageFile(Category bean,MultipartFile image,HttpServletRequest request) throws IOException {
         File imageFolder = new File(request.getServletContext().getRealPath("img/category"));
-        File file = new File(imageFolder,bean.getId()+".jpg");
-        if(!file.getParentFile().exists())
-            file.getParentFile().mkdirs();
-        image.transferTo(file);
-        BufferedImage img = ImageUtil.change2jpg(file);
+        File file = new File(imageFolder,bean.getId()+".jpg");  //以路径和分类名创建jpg文件
+        if(!file.getParentFile().exists()) //检查文件目录是否存在
+            file.getParentFile().mkdirs(); //不存在则创建目录
+        image.transferTo(file); //复制文件到该路径
+        BufferedImage img = ImageUtil.change2jpg(file); //使用ImageUtil转换图片格式为jpg
         ImageIO.write(img,"jpg",file);
     }
 
     @DeleteMapping("/categories/{id}")
-    public String delete(@PathVariable("id") int id,HttpServletRequest request){
+    public String delete(@PathVariable("id") int id,HttpServletRequest request){  //@PathVariable("id"):取出url中携带的id
         categoryService.delete(id);
-        File imageFolder = new File(request.getServletContext().getRealPath("img/category"));
-        File file = new File(imageFolder,id+".jpg");
-        file.delete();
+        File imageFolder = new File(request.getServletContext().getRealPath("img/category"));   //获得目录的绝对路径
+        File file = new File(imageFolder,id+".jpg");  //以路径和文件名创建file对象
+        file.delete();  //删除图片
         return null;
     }
 }
