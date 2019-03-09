@@ -7,7 +7,7 @@ import java.util.List;
 public class Page4Navigator<T> {
     Page<T> pageFormJPA;
 
-    int navigatePages;
+    int navigatePages; //每次显示多少分页
 
     int totalPages;
 
