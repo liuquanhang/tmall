@@ -16,9 +16,9 @@ public class Page4Navigator<T> {
     long totalElements;
 
     int size;
-
+    //当前页有多少条数据
     int numberOfElements;
-
+    //数据集合
     List<T> content;
 
     boolean isHasContent;
