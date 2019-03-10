@@ -2,6 +2,7 @@ package com.lqh.tmall.web;
 
 import com.lqh.tmall.pojo.Product;
 import com.lqh.tmall.service.CategoryService;
+import com.lqh.tmall.service.ProductImageService;
 import com.lqh.tmall.service.ProductService;
 import com.lqh.tmall.util.Page4Navigator;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,14 @@ public class ProductController {
     ProductService productService;
     @Autowired
     CategoryService categoryService;
+    @Autowired
+    ProductImageService productImageService;
 
     @GetMapping("categories/{cid}/products")
     public Page4Navigator<Product> list(@PathVariable("cid") int cid, @RequestParam(value = "start",defaultValue = "0")int start,@RequestParam(value = "size",defaultValue = "5")int size){
-        start = start>0?0:start;
+        start = start<0?0:start;
         Page4Navigator<Product> page = productService.list(cid, start, size, 5);
+        productImageService.setFirstProdutImages(page.getContent());
         return page;
     }
     @GetMapping("/products/{id}")
@@ -30,7 +34,7 @@ public class ProductController {
     }
 
     @PostMapping("/products")
-    public Object add(@RequestBody Product bean) {   //保存新增的product
+    public Object add(@RequestBody Product bean) throws Exception{   //保存新增的product
         bean.setCreateDate(new Date());
         productService.add(bean);
         return bean;
@@ -43,7 +47,7 @@ public class ProductController {
     }
 
     @PutMapping("/products")
-    public Object update(@RequestBody Product bean){  //更新product信息
+    public Object update(@RequestBody Product bean) throws Exception{  //更新product信息
         productService.update(bean);
         return bean;
     }

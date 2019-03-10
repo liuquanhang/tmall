@@ -18,7 +18,7 @@ public class ProductService {
     @Autowired
     CategoryService categoryService;
 
-    public void add(Product bean) {
+    public void add(Product bean) throws Exception{
         productDAO.save(bean);
     }
 

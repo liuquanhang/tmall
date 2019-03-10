@@ -44,7 +44,7 @@
                         return;
                     if(!checkNumber(this.bean.promotePrice,"优惠价格"))
                         return;
-                    if(!checkInt(this.bean.stock,"库存"));
+                    if(!checkInt(this.bean.stock,"库存"))
                     return;
                     var url = this.uri;
                     this.bean.category.id = cid;
@@ -103,7 +103,7 @@
                 <tr v-for="bean in beans ">
                     <td>{{bean.id}}</td>
                     <td>
-
+                        <img v-if="null != bean.firstProductImage" width="40px" :src="'img/productSingle/'+bean.firstProductImage.id+'.jpg'">
                     </td>
                     <td>{{bean.name}}</td>
                     <td>{{bean.subTitle}}</td>
