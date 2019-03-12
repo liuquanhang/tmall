@@ -64,9 +64,9 @@ public class Page4Navigator<T> {
 
         isHasPrevious  = pageFromJPA.hasPrevious();
 
-        calcNavigatepageNums();
+        calNavigatepageNums();
     }
-    private void calcNavigatepageNums(){
+    private void calNavigatepageNums(){
         int navigatePageNums[];
         int totalPages = getTotalPages();
         int num = getNumber();
