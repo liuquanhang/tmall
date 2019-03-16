@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
 
+//相当于一个中间表,把订单，产品和用户联系起来
 @Entity
 @Table(name = "orderItem")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
@@ -25,7 +26,7 @@ public class OrderItem {
     @JoinColumn(name="uid")
     private User user;
 
-    private int number;
+    private int number;  //每个订单里销售数
     public int getNumber() {
         return number;
     }

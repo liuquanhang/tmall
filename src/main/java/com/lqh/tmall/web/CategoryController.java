@@ -62,7 +62,7 @@ public class CategoryController {
         return bean;
     }
 
-    @PutMapping("/categories/{id}")  //前台以ajax函数put方式传回数据
+    @PutMapping("/categories/{id}")  //后台以ajax函数put方式传回数据
     public Object update(Category bean, MultipartFile image, HttpServletRequest request) throws IOException {
         String name = request.getParameter("name"); //获取请求中的name信息
         bean.setName(name);  //修改商品名称

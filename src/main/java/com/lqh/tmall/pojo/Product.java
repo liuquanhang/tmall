@@ -5,6 +5,7 @@ import org.springframework.data.elasticsearch.annotations.Document;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name="product")
@@ -26,8 +27,48 @@ public class Product {
     private float promotePrice;
     private int stock;
     private Date createDate;
-    @Transient
+    @Transient   //不序列化，创建对象时从其他表中查询，添加到该对象中
     private ProductImage firstProductImage;
+    @Transient
+    private List<ProductImage> productSingleImages;  //单个产品图片集合
+    @Transient
+    private List<ProductImage> productDetailImages;  //详情产品图片集合
+    @Transient
+    private int reviewCount;  //销量
+    @Transient
+    private int saleCount;    //累计评价
+
+    public List<ProductImage> getProductSingleImages() {
+        return productSingleImages;
+    }
+
+    public void setProductSingleImages(List<ProductImage> productSingleImages) {
+        this.productSingleImages = productSingleImages;
+    }
+
+    public List<ProductImage> getProductDetailImages() {
+        return productDetailImages;
+    }
+
+    public void setProductDetailImages(List<ProductImage> productDetailImages) {
+        this.productDetailImages = productDetailImages;
+    }
+
+    public int getReviewCount() {
+        return reviewCount;
+    }
+
+    public void setReviewCount(int reviewCount) {
+        this.reviewCount = reviewCount;
+    }
+
+    public int getSaleCount() {
+        return saleCount;
+    }
+
+    public void setSaleCount(int saleCount) {
+        this.saleCount = saleCount;
+    }
 
     public ProductImage getFirstProductImage() {
         return firstProductImage;
@@ -99,5 +140,13 @@ public class Product {
 
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
+    }
+
+    @Override
+    public String toString() {
+        return "Product{" +
+                "name='" + name + '\'' +
+                ", subTitle='" + subTitle + '\'' +
+                '}';
     }
 }

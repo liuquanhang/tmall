@@ -1,6 +1,7 @@
 package com.lqh.tmall.service;
 
 import com.lqh.tmall.dao.ProductImageDAO;
+import com.lqh.tmall.pojo.OrderItem;
 import com.lqh.tmall.pojo.Product;
 import com.lqh.tmall.pojo.ProductImage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,10 +46,17 @@ public class ProductImageService {
             product.setFirstProductImage(singleImages.get(0));
         else
             product.setFirstProductImage(new ProductImage());
+        //这样做是考虑到产品还没有来得及设置图片，但是在订单后台管理里查看订单项的对应产品图片。
     }
 
     public void setFirstProdutImages(List<Product> products) {
         for (Product product : products)
             setFirstProdutImage(product);
+    }
+
+    public void setFirstProdutImagesOnOrderItems(List<OrderItem> ois) {
+        for (OrderItem orderItem : ois) {
+            setFirstProdutImage(orderItem.getProduct());
+        }
     }
 }

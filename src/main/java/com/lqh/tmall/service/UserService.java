@@ -21,4 +21,21 @@ public class UserService {
         Page<User> users = userDAO.findAll(pageable);
         return new Page4Navigator<>(users,navigatePages);
     }
+
+    public boolean isExist(String name){
+        User user = getByName(name);
+        return user!=null;
+    }
+
+    public User getByName(String name){
+        return userDAO.findByName(name);
+    }
+
+    public void add(User user) {
+        userDAO.save(user);
+    }
+
+    public User get(String name, String password) {
+        return userDAO.getByNameAndPassword(name,password);
+    }
 }
