@@ -210,4 +210,22 @@ public class ForeRESTController {
         productImageService.setFirstProdutImagesOnOrderItems(ois);
         return ois;
     }
+
+    @GetMapping("forechangeOrderItem")
+    public Object changeOrderItem(HttpSession session,int pid,int num){
+        User user = (User)session.getAttribute("user");
+        if(user==null) {
+            return Result.fail("未登录");
+        }else{
+            List<OrderItem> orderItems = orderItemService.listByUser(user);
+            for(OrderItem orderItem:orderItems){
+                if(orderItem.getProduct().getId()==pid){
+                    orderItem.setNumber(num);
+                    orderItemService.update(orderItem);
+                    break;
+                }
+            }
+        }
+        return Result.success();
+    }
 }
