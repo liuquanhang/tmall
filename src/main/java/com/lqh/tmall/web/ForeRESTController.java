@@ -228,4 +228,15 @@ public class ForeRESTController {
         }
         return Result.success();
     }
+
+    @GetMapping("foredeleteOrderItem")
+    public Object deleteOrderItem(HttpSession session,int oiid){
+        User user = (User)session.getAttribute("user");
+        if(user==null){
+            return Result.fail("未登录");
+        }else{
+            orderItemService.delete(oiid);
+            return Result.success();
+        }
+    }
 }
