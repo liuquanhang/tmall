@@ -3,12 +3,13 @@ package com.lqh.tmall.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 //相当于一个中间表,把订单，产品和用户联系起来
 @Entity
 @Table(name = "orderItem")
 @JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
-public class OrderItem {
+public class OrderItem implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")

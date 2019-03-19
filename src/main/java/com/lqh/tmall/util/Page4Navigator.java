@@ -2,9 +2,10 @@ package com.lqh.tmall.util;
 
 import org.springframework.data.domain.Page;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Page4Navigator<T> {
+public class Page4Navigator<T> implements Serializable {
     Page<T> pageFormJPA;
 
     int navigatePages; //每次显示多少分页
