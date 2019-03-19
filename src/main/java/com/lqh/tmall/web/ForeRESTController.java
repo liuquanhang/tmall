@@ -50,7 +50,7 @@ public class ForeRESTController {
         return cs;
     }
 
-    //处理登陆操作
+    //处理注册操作
     @PostMapping("/foreregister")
     public Object register(@RequestBody User user){
             String name = user.getName();
@@ -61,7 +61,7 @@ public class ForeRESTController {
             if(exist){
                 String message = "用户名已经被使用";
                 return Result.fail(message);
-            }else {  //MD5和盐加密
+            }else {  //MD5和盐加密密码，保存账号
                 String salt = new SecureRandomNumberGenerator().nextBytes().toString();
                 int times = 2;
                 String algorithmName = "md5";
