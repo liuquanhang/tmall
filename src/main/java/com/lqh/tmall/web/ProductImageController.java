@@ -30,7 +30,7 @@ public class ProductImageController {
     CategoryService categoryService;
 
     @PostMapping("/productImages")
-    public Object add(@RequestParam("pid")int pid, @RequestParam("type")String type, MultipartFile image, HttpServletRequest request){
+    public Object add(@RequestParam("pid") int pid, @RequestParam("type") String type, MultipartFile image, HttpServletRequest request) {
         ProductImage bean = new ProductImage();
         Product product = productService.get(pid);
         bean.setProduct(product);
@@ -38,15 +38,15 @@ public class ProductImageController {
 
         productImageService.add(bean);
         String folder = "img/";
-        if(ProductImageService.type_single.equals(bean.getType())){
-            folder +="productSingle";
-        }else{
-            folder +="productDetail";
+        if (ProductImageService.type_single.equals(bean.getType())) {
+            folder += "productSingle";
+        } else {
+            folder += "productDetail";
         }
         File iamgeFolder = new File(request.getServletContext().getRealPath(folder));
-        File file = new File(iamgeFolder,bean.getId()+".jpg");
+        File file = new File(iamgeFolder, bean.getId() + ".jpg");
         String fileName = file.getName();
-        if(!file.getParentFile().exists()){ //检查目录是否存在
+        if (!file.getParentFile().exists()) { //检查目录是否存在
             file.getParentFile().mkdirs();  //不存在则创建目录
         }
         try {
@@ -56,35 +56,35 @@ public class ProductImageController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        if(ProductImageService.type_single.equals(bean.getType())){
+        if (ProductImageService.type_single.equals(bean.getType())) {
             String imageFolder_small = request.getServletContext().getRealPath("img/productSingle_small");
             String imageFolder_middle = request.getServletContext().getRealPath("img/productSingle_middle");
-            File f_small = new File(imageFolder_small,fileName);
-            File f_middle = new File(imageFolder_middle,fileName);
+            File f_small = new File(imageFolder_small, fileName);
+            File f_middle = new File(imageFolder_middle, fileName);
             f_small.getParentFile().mkdirs();
             f_middle.getParentFile().mkdirs();
-            ImageUtil.resizeImage(file,56,56,f_small);
-            ImageUtil.resizeImage(file,217,190,f_middle);
+            ImageUtil.resizeImage(file, 56, 56, f_small);
+            ImageUtil.resizeImage(file, 217, 190, f_middle);
         }
         return bean;
     }
 
     @GetMapping("/products/{pid}/productImages")
-    public List<ProductImage> list(@RequestParam("type")String type,@PathVariable("pid")int pid){
+    public List<ProductImage> list(@RequestParam("type") String type, @PathVariable("pid") int pid) {
         Product product = productService.get(pid);
-        if(ProductImageService.type_single.equals(type)){
+        if (ProductImageService.type_single.equals(type)) {
             List<ProductImage> singles = productImageService.listSingleProductImages(product);
             return singles;
-        }else if(ProductImageService.type_detail.equals(type)){
+        } else if (ProductImageService.type_detail.equals(type)) {
             List<ProductImage> details = productImageService.listDetailProductImages(product);
             return details;
-        }else{
+        } else {
             return new ArrayList<>();
         }
     }
 
     @DeleteMapping("/productImages/{id}")
-    public String delete(@PathVariable("id")int id, HttpServletRequest request) {
+    public String delete(@PathVariable("id") int id, HttpServletRequest request) {
         ProductImage bean = productImageService.get(id);
         productImageService.delete(id);
         String folder = "img/";

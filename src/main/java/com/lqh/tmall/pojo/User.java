@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "user")
-@JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -53,24 +53,25 @@ public class User implements Serializable {
         this.salt = salt;
     }
 
-    public String getAnonymousName(){
-        if(null!=anonymousName)
+    public String getAnonymousName() {
+        if (null != anonymousName)
             return anonymousName;
-        if(null==name)
-            anonymousName= null;
-        else if(name.length()<=1)
+        if (null == name)
+            anonymousName = null;
+        else if (name.length() <= 1)
             anonymousName = "*";
-        else if(name.length()==2)
-            anonymousName = name.substring(0,1) +"*";
+        else if (name.length() == 2)
+            anonymousName = name.substring(0, 1) + "*";
         else {
-            char[] cs =name.toCharArray();
-            for (int i = 1; i < cs.length-1; i++) {
-                cs[i]='*';
+            char[] cs = name.toCharArray();
+            for (int i = 1; i < cs.length - 1; i++) {
+                cs[i] = '*';
             }
             anonymousName = new String(cs);
         }
         return anonymousName;
     }
+
     public void setAnonymousName(String anonymousName) {
         this.anonymousName = anonymousName;
     }

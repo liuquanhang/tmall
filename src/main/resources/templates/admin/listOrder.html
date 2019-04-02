@@ -1,45 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:include="include/admin/adminHeader::html('订单管理')" ></head>
+<head th:include="include/admin/adminHeader::html('订单管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
-    $(function(){
+    $(function () {
 
         var data4Vue = {
-            uri:'orders',
+            uri: 'orders',
             beans: [],
-            pagination:{}
+            pagination: {}
         };
 
         //ViewModel
         var vue = new Vue({
             el: '#workingArea',
             data: data4Vue,
-            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+            mounted: function () { //mounted　表示这个 Vue 对象加载成功了
                 this.list(0);
             },
             methods: {
-                list:function(start){
-                    var url =  this.uri+ "?start="+start;
-                    axios.get(url).then(function(response) {
+                list: function (start) {
+                    var url = this.uri + "?start=" + start;
+                    axios.get(url).then(function (response) {
                         vue.pagination = response.data;
                         vue.beans = response.data.content;
                     });
                 },
-                showOrderItems: function(order){
+                showOrderItems: function (order) {
                     var id = order.id;
-                    $("#orderItemsTR"+id).show();
+                    $("#orderItemsTR" + id).show();
                 },
-                jump: function(page){
-                    jump(page,vue); //定义在adminHeader.html 中
+                jump: function (page) {
+                    jump(page, vue); //定义在adminHeader.html 中
                 },
-                jumpByNumber: function(start){
-                    jumpByNumber(start,vue);
+                jumpByNumber: function (start) {
+                    jumpByNumber(start, vue);
                 },
-                deliveryOrder:function(order,e){
-                    var url =  "deliveryOrder/"+order.id;
-                    axios.put(url).then(function(response) {
+                deliveryOrder: function (order, e) {
+                    var url = "deliveryOrder/" + order.id;
+                    axios.put(url).then(function (response) {
                         $(e.target).hide();
                     });
                 }
@@ -47,7 +47,7 @@
         });
 
         Vue.filter('formatDateFilter', function (value, formatString) {
-            if(null==value)
+            if (null == value)
                 return "";
             formatString = formatString || 'YYYY-MM-DD HH:mm:ss';
             return moment(value).format(formatString);
@@ -56,8 +56,8 @@
 
 </script>
 
-<div id="workingArea" >
-    <h1 class="label label-info" >订单管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">订单管理</h1>
     <br>
     <br>
 
@@ -79,7 +79,7 @@
             <tbody>
             <!-- 在业务上需要一个订单数据产生两行 tr, 此时就不能在 tr上进行 v-for, 而需要用 template 标签 -->
             <template v-for="bean in beans ">
-                <tr >
+                <tr>
                     <td>
                         {{bean.statusDesc}}
                     </td>
@@ -105,19 +105,24 @@
                         {{bean.confirmDate | formatDateFilter}}
                     </td>
                     <td>
-                        <button @click="showOrderItems(bean)" class="orderPageCheckOrderItems btn btn-primary btn-xs">查看详情</button>
+                        <button @click="showOrderItems(bean)" class="orderPageCheckOrderItems btn btn-primary btn-xs">
+                            查看详情
+                        </button>
 
-                        <button v-if="bean.status=='waitDelivery'" @click="deliveryOrder(bean,$event)" class="btn btn-primary btn-xs">发货</button>
+                        <button v-if="bean.status=='waitDelivery'" @click="deliveryOrder(bean,$event)"
+                                class="btn btn-primary btn-xs">发货
+                        </button>
                     </td>
                 </tr>
-                <tr class="orderPageOrderItemTR"  :id="'orderItemsTR'+bean.id">
+                <tr class="orderPageOrderItemTR" :id="'orderItemsTR'+bean.id">
                     <td colspan="10" align="center">
 
-                        <div  class="orderPageOrderItem">
+                        <div class="orderPageOrderItem">
                             <table width="800px" align="center" class="orderPageOrderItemTable">
                                 <tr v-for="orderItem in bean.orderItems">
                                     <td align="left">
-                                        <img width="40px" height="40px" :src="'img/productSingle/'+orderItem.product.firstProductImage.id+'.jpg'">
+                                        <img width="40px" height="40px"
+                                             :src="'img/productSingle/'+orderItem.product.firstProductImage.id+'.jpg'">
                                     </td>
 
                                     <td>
@@ -144,10 +149,10 @@
         </table>
     </div>
 
-    <div th:replace="include/admin/adminPage::html" ></div>
+    <div th:replace="include/admin/adminPage::html"></div>
 
 </div>
 
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

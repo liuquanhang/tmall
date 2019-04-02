@@ -7,7 +7,7 @@ import java.io.Serializable;
 
 @Entity
 @Table(name = "propertyvalue")
-@JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class PropertyValue implements Serializable {
     @Id
     @Column(name = "id")

@@ -17,7 +17,7 @@ public class PropertyValueController {
     ProductService productService;
 
     @GetMapping("/products/{pid}/propertyValues")
-    public List<PropertyValue> list(@PathVariable("pid")int pid){
+    public List<PropertyValue> list(@PathVariable("pid") int pid) {
         Product product = productService.get(pid);
         propertyValueService.init(product);
         List<PropertyValue> propertyValues = propertyValueService.list(product);
@@ -25,7 +25,7 @@ public class PropertyValueController {
     }
 
     @PutMapping("/propertyValues")
-    public Object update(@RequestBody PropertyValue bean){
+    public Object update(@RequestBody PropertyValue bean) {
         propertyValueService.update(bean);
         return bean;
     }

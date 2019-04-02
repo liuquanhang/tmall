@@ -16,7 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 public class RedisConfig extends CachingConfigurerSupport {
 
     @Bean
-    public CacheManager cacheManager(RedisTemplate<?,?> redisTemplate) {
+    public CacheManager cacheManager(RedisTemplate<?, ?> redisTemplate) {
         RedisSerializer stringSerializer = new StringRedisSerializer();
         Jackson2JsonRedisSerializer jackson2JsonRedisSerializer = new Jackson2JsonRedisSerializer(Object.class);
         ObjectMapper om = new ObjectMapper();

@@ -19,31 +19,31 @@ public class UserService {
     @Autowired
     UserDAO userDAO;
 
-    @Cacheable(key="'users-page-'+#p0+ '-' + #p1")
-    public Page4Navigator<User> list(int start,int size,int navigatePages){
-        Sort sort = new Sort(Sort.Direction.DESC,"id");
+    @Cacheable(key = "'users-page-'+#p0+ '-' + #p1")
+    public Page4Navigator<User> list(int start, int size, int navigatePages) {
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
         Pageable pageable = new PageRequest(start, size, sort);
         Page<User> users = userDAO.findAll(pageable);
-        return new Page4Navigator<>(users,navigatePages);
+        return new Page4Navigator<>(users, navigatePages);
     }
 
-    public boolean isExist(String name){
+    public boolean isExist(String name) {
         User user = getByName(name);
-        return user!=null;
+        return user != null;
     }
 
-    @Cacheable(key="'users-one-name-'+ #p0")
-    public User getByName(String name){
+    @Cacheable(key = "'users-one-name-'+ #p0")
+    public User getByName(String name) {
         return userDAO.findByName(name);
     }
 
-    @CacheEvict(allEntries=true)
+    @CacheEvict(allEntries = true)
     public void add(User user) {
         userDAO.save(user);
     }
 
-    @Cacheable(key="'users-one-name-'+ #p0 +'-password-'+ #p1")
+    @Cacheable(key = "'users-one-name-'+ #p0 +'-password-'+ #p1")
     public User get(String name, String password) {
-        return userDAO.getByNameAndPassword(name,password);
+        return userDAO.getByNameAndPassword(name, password);
     }
 }

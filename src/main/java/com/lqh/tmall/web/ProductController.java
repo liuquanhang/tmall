@@ -21,33 +21,34 @@ public class ProductController {
     ProductImageService productImageService;
 
     @GetMapping("categories/{cid}/products")
-    public Page4Navigator<Product> list(@PathVariable("cid") int cid, @RequestParam(value = "start",defaultValue = "0")int start,@RequestParam(value = "size",defaultValue = "5")int size){
-        start = start<0?0:start;
+    public Page4Navigator<Product> list(@PathVariable("cid") int cid, @RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) {
+        start = start < 0 ? 0 : start;
         Page4Navigator<Product> page = productService.list(cid, start, size, 5);
         productImageService.setFirstProdutImages(page.getContent());
         return page;
     }
+
     @GetMapping("/products/{id}")
-    public Product get(@PathVariable("id") int id){   //通过id获取product
-        Product bean=productService.get(id);
+    public Product get(@PathVariable("id") int id) {   //通过id获取product
+        Product bean = productService.get(id);
         return bean;
     }
 
     @PostMapping("/products")
-    public Object add(@RequestBody Product bean) throws Exception{   //保存新增的product
+    public Object add(@RequestBody Product bean) throws Exception {   //保存新增的product
         bean.setCreateDate(new Date());
         productService.add(bean);
         return bean;
     }
 
     @DeleteMapping("/products/{id}")
-    public String delete(@PathVariable("id") int id, HttpServletRequest request)  {  //通过id删除product
+    public String delete(@PathVariable("id") int id, HttpServletRequest request) {  //通过id删除product
         productService.delete(id);
         return null;
     }
 
     @PutMapping("/products")
-    public Object update(@RequestBody Product bean) throws Exception{  //更新product信息
+    public Object update(@RequestBody Product bean) throws Exception {  //更新product信息
         productService.update(bean);
         return bean;
     }

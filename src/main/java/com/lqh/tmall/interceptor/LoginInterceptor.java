@@ -1,6 +1,6 @@
 package com.lqh.tmall.interceptor;
 
-import com.lqh.tmall.pojo.User;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.subject.Subject;
@@ -15,7 +15,7 @@ public class LoginInterceptor implements HandlerInterceptor {
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
         HttpSession session = httpServletRequest.getSession();
         String contextPath = session.getServletContext().getContextPath();  //获取应用名
-        String [] requireAuthPages = new String []{
+        String[] requireAuthPages = new String[]{
                 "buy",
                 "alipay",
                 "payed",
@@ -40,11 +40,11 @@ public class LoginInterceptor implements HandlerInterceptor {
                 "foredoreview"
         };
         String uri = httpServletRequest.getRequestURI();  //获取请求uri
-        uri = StringUtils.remove(uri,contextPath+"/");  //移除"应用名/"
+        uri = StringUtils.remove(uri, contextPath + "/");  //移除"应用名/"
         String page = uri;
-        if(beginWith(page,requireAuthPages)){
+        if (beginWith(page, requireAuthPages)) {
             Subject subject = SecurityUtils.getSubject();
-            if(!subject.isAuthenticated()){
+            if (!subject.isAuthenticated()) {
                 httpServletResponse.sendRedirect("login");
                 return false;
             }
@@ -52,15 +52,15 @@ public class LoginInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    private boolean beginWith(String page,String[] requiredAuthPages){
+    private boolean beginWith(String page, String[] requiredAuthPages) {
         boolean result = false;
-        for (String authPage:requiredAuthPages){
-            if(StringUtils.startsWith(page,authPage)){
+        for (String authPage : requiredAuthPages) {
+            if (StringUtils.startsWith(page, authPage)) {
                 result = true;
                 break;
             }
         }
-        return  result;
+        return result;
     }
 
     @Override

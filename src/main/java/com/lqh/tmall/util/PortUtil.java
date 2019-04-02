@@ -18,15 +18,14 @@ public class PortUtil {
     }
 
     public static void checkPort(int port, String server, boolean shutdown) {
-        if(!testPort(port)) {
-            if(shutdown) {
-                String message =String.format("在端口 %d 未检查得到 %s 启动%n",port,server);
+        if (!testPort(port)) {
+            if (shutdown) {
+                String message = String.format("在端口 %d 未检查得到 %s 启动%n", port, server);
                 JOptionPane.showMessageDialog(null, message);
                 System.exit(1);
-            }
-            else {
-                String message =String.format("在端口 %d 未检查得到 %s 启动%n,是否继续?",port,server);
-                if(JOptionPane.OK_OPTION !=     JOptionPane.showConfirmDialog(null, message))
+            } else {
+                String message = String.format("在端口 %d 未检查得到 %s 启动%n,是否继续?", port, server);
+                if (JOptionPane.OK_OPTION != JOptionPane.showConfirmDialog(null, message))
                     System.exit(1);
 
             }

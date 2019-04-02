@@ -9,16 +9,17 @@ import org.springframework.data.elasticsearch.repository.config.EnableElasticsea
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
 @SpringBootApplication
-@EnableCaching
-@EnableElasticsearchRepositories(basePackages = "com.lqh.tmall.es")
-@EnableJpaRepositories(basePackages = {"com.lqh.tmall.dao","com.lqh.tmall.pojo"})
+@EnableCaching  //添加缓存
+@EnableElasticsearchRepositories(basePackages = "com.lqh.tmall.es")  //添加Elasticsearch搜索
+@EnableJpaRepositories(basePackages = {"com.lqh.tmall.dao", "com.lqh.tmall.pojo"})  //添加JPA
 public class Application {
-    static{
-        PortUtil.checkPort(6379,"Redis服务端",true);
-        PortUtil.checkPort(9300,"ElasticSearch服务端",true);
-        PortUtil.checkPort(5601,"Kibana工具",true);
+    static {
+        PortUtil.checkPort(6379, "Redis服务端", true);
+        PortUtil.checkPort(9300, "ElasticSearch服务端", true);
+        PortUtil.checkPort(5601, "Kibana工具", true);
     }
-    public static void main(String[] args){
-        SpringApplication.run(Application.class,args);
+
+    public static void main(String[] args) {
+        SpringApplication.run(Application.class, args);
     }
 }

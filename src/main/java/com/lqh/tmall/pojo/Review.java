@@ -1,13 +1,15 @@
 package com.lqh.tmall.pojo;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Date;
+
 //产品评价
 @Entity
 @Table(name = "review")
-@JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class Review implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -15,11 +17,11 @@ public class Review implements Serializable {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="uid")
+    @JoinColumn(name = "uid")
     private User user;
 
     @ManyToOne
-    @JoinColumn(name="pid")
+    @JoinColumn(name = "pid")
     private Product product;
 
     private String content;

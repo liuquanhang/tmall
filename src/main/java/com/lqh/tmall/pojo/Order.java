@@ -10,7 +10,7 @@ import java.util.List;
 
 @Entity
 @Table(name = "order_")
-@JsonIgnoreProperties({ "handler","hibernateLazyInitializer" })
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class Order implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -18,7 +18,7 @@ public class Order implements Serializable {
     private int id;
 
     @ManyToOne
-    @JoinColumn(name="uid")
+    @JoinColumn(name = "uid")
     private User user;  //该订单对应的用户
 
     private String orderCode;
@@ -46,31 +46,31 @@ public class Order implements Serializable {
         this.statusDesc = statusDesc;
     }
 
-    public String getStatusDesc(){
-        if(null!=statusDesc)
+    public String getStatusDesc() {
+        if (null != statusDesc)
             return statusDesc;
-        String desc ="未知";
-        switch(status){
+        String desc = "未知";
+        switch (status) {
             case OrderService.waitPay:
-                desc="待付";
+                desc = "待付";
                 break;
             case OrderService.waitDelivery:
-                desc="待发";
+                desc = "待发";
                 break;
             case OrderService.waitConfirm:
-                desc="待收";
+                desc = "待收";
                 break;
             case OrderService.waitReview:
-                desc="等评";
+                desc = "等评";
                 break;
             case OrderService.finish:
-                desc="完成";
+                desc = "完成";
                 break;
             case OrderService.delete:
-                desc="刪除";
+                desc = "刪除";
                 break;
             default:
-                desc="未知";
+                desc = "未知";
         }
         statusDesc = desc;
         return statusDesc;
@@ -83,15 +83,19 @@ public class Order implements Serializable {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getAddress() {
         return address;
     }
+
     public void setAddress(String address) {
         this.address = address;
     }
+
     public String getPost() {
         return post;
     }
+
     public void setPost(String post) {
         this.post = post;
     }
@@ -99,36 +103,47 @@ public class Order implements Serializable {
     public String getMobile() {
         return mobile;
     }
+
     public void setMobile(String mobile) {
         this.mobile = mobile;
     }
+
     public String getUserMessage() {
         return userMessage;
     }
+
     public void setUserMessage(String userMessage) {
         this.userMessage = userMessage;
     }
+
     public Date getCreateDate() {
         return createDate;
     }
+
     public void setCreateDate(Date createDate) {
         this.createDate = createDate;
     }
+
     public Date getPayDate() {
         return payDate;
     }
+
     public void setPayDate(Date payDate) {
         this.payDate = payDate;
     }
+
     public Date getDeliveryDate() {
         return deliveryDate;
     }
+
     public void setDeliveryDate(Date deliveryDate) {
         this.deliveryDate = deliveryDate;
     }
+
     public Date getConfirmDate() {
         return confirmDate;
     }
+
     public void setConfirmDate(Date confirmDate) {
         this.confirmDate = confirmDate;
     }

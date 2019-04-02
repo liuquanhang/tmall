@@ -7,39 +7,43 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-    @Table(name = "productimage")
-    @JsonIgnoreProperties({ "handler","hibernateLazyInitializer"})
-    public class ProductImage implements Serializable {
+@Table(name = "productimage")
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
+public class ProductImage implements Serializable {
 
-        @Id
-        @GeneratedValue(strategy = GenerationType.IDENTITY)
-        @Column(name = "id")
-        private int id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private int id;
 
-        @ManyToOne
-        @JoinColumn(name="pid")
-        @JsonBackReference
-        private Product product;
+    @ManyToOne
+    @JoinColumn(name = "pid")
+    @JsonBackReference
+    private Product product;
 
-        private String type;
-        public int getId() {
-            return id;
-        }
+    private String type;
 
-        public void setId(int id) {
-            this.id = id;
-        }
+    public int getId() {
+        return id;
+    }
 
-        public String getType() {
-            return type;
-        }
-        public void setType(String type) {
-            this.type = type;
-        }
-        public Product getProduct() {
-            return product;
-        }
-        public void setProduct(Product product) {
-            this.product = product;
-        }
+    public void setId(int id) {
+        this.id = id;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public Product getProduct() {
+        return product;
+    }
+
+    public void setProduct(Product product) {
+        this.product = product;
+    }
 }

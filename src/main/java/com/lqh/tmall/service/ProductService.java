@@ -40,13 +40,13 @@ public class ProductService {
     @Autowired
     ProductESDAO productESDAO;
 
-    @CacheEvict(allEntries=true)
-    public void add(Product bean) throws Exception{
+    @CacheEvict(allEntries = true)
+    public void add(Product bean) throws Exception {
         productDAO.save(bean);
         productESDAO.save(bean);
     }
 
-    @CacheEvict(allEntries=true)
+    @CacheEvict(allEntries = true)
     public void delete(int id) {
         productDAO.delete(id);
         productESDAO.delete(id);
@@ -57,27 +57,29 @@ public class ProductService {
         return productDAO.findOne(id);
     }
 
-    @CacheEvict(allEntries=true)
+    @CacheEvict(allEntries = true)
     public void update(Product bean) {
         productDAO.save(bean);
         productESDAO.save(bean);
     }
 
     //分页展示产品
-    @Cacheable(key="'products-cid-'+#p0+'-page-'+#p1 + '-' + #p2 ")
-    public Page4Navigator<Product> list(int id,int start,int size,int navigatePages){
+    @Cacheable(key = "'products-cid-'+#p0+'-page-'+#p1 + '-' + #p2 ")
+    public Page4Navigator<Product> list(int id, int start, int size, int navigatePages) {
         Category category = categoryService.get(id);
         Sort sort = new Sort(Sort.Direction.DESC, "id");
-        Pageable pageable = new PageRequest(start,size,sort);
+        Pageable pageable = new PageRequest(start, size, sort);
         Page<Product> pageFromJPA = productDAO.findByCategory(category, pageable);
-        return new Page4Navigator<>(pageFromJPA,navigatePages);
+        return new Page4Navigator<>(pageFromJPA, navigatePages);
     }
+
     //为多个分类填充产品集合
     public void fill(List<Category> categorys) {
         for (Category category : categorys) {
             fill(category);
         }
     }
+
     //为分类填充产品集合
     public void fill(Category category) {
         ProductService productService = SpringContextUtil.getBean(ProductService.class);
@@ -87,8 +89,8 @@ public class ProductService {
     }
 
     //查询某个分类下的所有产品
-    @Cacheable(key="'products-cid-'+ #p0.id")
-    public List<Product> listByCategory(Category category){
+    @Cacheable(key = "'products-cid-'+ #p0.id")
+    public List<Product> listByCategory(Category category) {
         return productDAO.findByCategoryOrderById(category);
     }
 
@@ -96,41 +98,43 @@ public class ProductService {
     public void fillByRow(List<Category> categories) {
         int productNumberEachRow = 8;
         for (Category category : categories) {
-            List<Product> products =  category.getProducts();
-            List<List<Product>> productsByRow =  new ArrayList<>();
-            for (int i = 0; i < products.size(); i+=productNumberEachRow) {
-                int size = i+productNumberEachRow;
-                size= size>products.size()?products.size():size;
-                List<Product> productsOfEachRow =products.subList(i, size);
+            List<Product> products = category.getProducts();
+            List<List<Product>> productsByRow = new ArrayList<>();
+            for (int i = 0; i < products.size(); i += productNumberEachRow) {
+                int size = i + productNumberEachRow;
+                size = size > products.size() ? products.size() : size;
+                List<Product> productsOfEachRow = products.subList(i, size);
                 productsByRow.add(productsOfEachRow);
             }
             category.setProductByRow(productsByRow);
         }
     }
 
-    public void setSaleAndReviewNumber(Product product){  //添加销量和评价数量
+    public void setSaleAndReviewNumber(Product product) {  //添加销量和评价数量
         int saleCount = orderItemService.getSaleCount(product);//获得该商品总销量
         product.setSaleCount(saleCount);
         int reviewCount = reviewService.getCount(product);
         product.setReviewCount(reviewCount);
     }
 
-    public void setSaleAndReviewNumber(List<Product> products){
-        for (Product product:products){
+    public void setSaleAndReviewNumber(List<Product> products) {
+        for (Product product : products) {
             setSaleAndReviewNumber(product);
         }
     }
+
     //初始化elasticsearch,如果没有数据则从数据库中保存
-    private void initDatabase2ES(){
+    private void initDatabase2ES() {
         Pageable pageable = new PageRequest(0, 5);
         Page<Product> page = productESDAO.findAll(pageable);
-        if(page.getContent().isEmpty()){
+        if (page.getContent().isEmpty()) {
             List<Product> products = productDAO.findAll();
-            for(Product product:products){
+            for (Product product : products) {
                 productESDAO.save(product);
             }
         }
     }
+
     //使用elasticsearch搜索
     public List<Product> search(String keyword, int start, int size) {
         initDatabase2ES();
@@ -139,8 +143,8 @@ public class ProductService {
                         ScoreFunctionBuilders.weightFactorFunction(100))
                 .scoreMode("sum")
                 .setMinScore(10);
-        Sort sort  = new Sort(Sort.Direction.DESC,"id");
-        Pageable pageable = new PageRequest(start, size,sort);
+        Sort sort = new Sort(Sort.Direction.DESC, "id");
+        Pageable pageable = new PageRequest(start, size, sort);
         SearchQuery searchQuery = new NativeSearchQueryBuilder()
                 .withPageable(pageable)
                 .withQuery(functionScoreQueryBuilder).build();

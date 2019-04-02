@@ -9,9 +9,9 @@ import java.util.Date;
 import java.util.List;
 
 @Entity
-@Table(name="product")
-@JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
-@Document(indexName = "tmall_springboot",type = "product")
+@Table(name = "product")
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
+@Document(indexName = "tmall_springboot", type = "product")
 public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -19,7 +19,7 @@ public class Product implements Serializable {
     int id;
 
     @ManyToOne
-    @JoinColumn(name="cid")
+    @JoinColumn(name = "cid")
     private Category category;
     //如果既没有指明关联到哪个Column,又没有明确要用@Transient忽略，那么就会自动关联到表对应的同名字段
     private String name;

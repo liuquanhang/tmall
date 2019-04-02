@@ -1,22 +1,22 @@
 <div th:fragment="html">
     <script>
-        $(function(){
+        $(function () {
             var oid = getUrlParms("oid");
             var data4Vue = {
-                uri:'foreconfirmPay',
-                order:[]
+                uri: 'foreconfirmPay',
+                order: []
             };
             //ViewModel
             var vue = new Vue({
                 el: '#workingArea',
                 data: data4Vue,
-                mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                mounted: function () { //mounted　表示这个 Vue 对象加载成功了
                     this.load();
                 },
                 methods: {
-                    load:function(){
-                        var url =  this.uri+"?oid="+oid;
-                        axios.get(url).then(function(response) {
+                    load: function () {
+                        var url = this.uri + "?oid=" + oid;
+                        axios.get(url).then(function (response) {
                             vue.order = response.data;
                         });
                     }
@@ -28,10 +28,10 @@
     <div class="confirmPayPageDiv">
         <div class="confirmPayImageDiv">
             <img src="img/site/comformPayFlow.png">
-            <div  class="confirmPayTime1">
+            <div class="confirmPayTime1">
                 {{order.createDate|formatDateFilter}}
             </div>
-            <div  class="confirmPayTime2">
+            <div class="confirmPayTime2">
                 {{order.payDate|formatDateFilter}}
             </div>
             <div class="confirmPayTime3">
@@ -49,12 +49,13 @@
                     <th colspan="2">宝贝</th>
                     <th width="120px">单价</th>
                     <th width="120px">数量</th>
-                    <th width="120px">商品总价 </th>
+                    <th width="120px">商品总价</th>
                     <th width="120px">运费</th>
                 </tr>
                 </thead>
                 <tr v-for="oi in order.orderItems">
-                    <td><img width="50px" :src="'img/productSingle_middle/'+oi.product.firstProductImage.id+'.jpg'"></td>
+                    <td><img width="50px" :src="'img/productSingle_middle/'+oi.product.firstProductImage.id+'.jpg'">
+                    </td>
                     <td class="confirmPayOrderItemProductLink">
                         <a href="#nowhere">{{oi.product.name}}</a>
                     </td>
@@ -82,8 +83,8 @@
                     <td>天猫商铺 <span class="confirmPayOrderDetailWangWangGif"></span></td>
                 </tr>
                 <tr>
-                    <td>收货信息： </td>
-                    <td>{{order.address}}，{{order.receiver}}， {{order.mobile}}，{{order.post}} </td>
+                    <td>收货信息：</td>
+                    <td>{{order.address}}，{{order.receiver}}， {{order.mobile}}，{{order.post}}</td>
                 </tr>
                 <tr>
                     <td>成交时间：</td>
@@ -94,7 +95,9 @@
         </div>
         <div class="confirmPayButtonDiv">
             <div class="confirmPayWarning">请收到货后，再确认收货！否则您可能钱货两空！</div>
-            <a :href="'orderConfirmed?oid='+order.id"><button class="confirmPayButton">确认支付</button></a>
+            <a :href="'orderConfirmed?oid='+order.id">
+                <button class="confirmPayButton">确认支付</button>
+            </a>
         </div>
     </div>
 </div>

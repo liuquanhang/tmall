@@ -30,17 +30,18 @@ public class OtherInterceptor implements HandlerInterceptor {
         HttpSession session = httpServletRequest.getSession();
         User user = (User) session.getAttribute("user");
         int cartTotalItemNumber = 0;
-        if(user!=null){
+        if (user != null) {
             List<OrderItem> ois = orderItemService.listByUser(user);
-            for(OrderItem orderItem:ois){
-                cartTotalItemNumber+=orderItem.getNumber();
+            for (OrderItem orderItem : ois) {
+                cartTotalItemNumber += orderItem.getNumber();
             }
         }
         List<Category> cs = categoryService.list();
         String contextPath = httpServletRequest.getServletContext().getContextPath();
-        httpServletRequest.getServletContext().setAttribute("categories_below_search",cs);
-        session.setAttribute("cartTotalNumber",cartTotalItemNumber);   //购物车数量保存在session中
-        httpServletRequest.getServletContext().setAttribute("contextPath",contextPath);
+        //把分类list存放在servlet上下文中
+        httpServletRequest.getServletContext().setAttribute("categories_below_search", cs);
+        session.setAttribute("cartTotalNumber", cartTotalItemNumber);   //购物车数量保存在session中
+        httpServletRequest.getServletContext().setAttribute("contextPath", contextPath);
     }
 
     @Override

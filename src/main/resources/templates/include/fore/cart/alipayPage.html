@@ -1,17 +1,17 @@
 <div th:fragment="html">
     <script>
-        $(function(){
+        $(function () {
             var oid = getUrlParms("oid");
             var total = getUrlParms("total");
             var data4Vue = {
-                oid:'',
-                total:''
+                oid: '',
+                total: ''
             };
             //ViewModel
             var vue = new Vue({
                 el: '#workingArea',
                 data: data4Vue,
-                mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                mounted: function () { //mounted　表示这个 Vue 对象加载成功了
                     this.oid = oid;
                     this.total = total;
                 }
@@ -35,7 +35,9 @@
         </div>
 
         <div>
-            <a :href="'payed?oid='+oid+'&total='+total"><button class="confirmPay">确认支付</button></a>
+            <a :href="'payed?oid='+oid+'&total='+total">
+                <button class="confirmPay">确认支付</button>
+            </a>
         </div>
     </div>
 </div>

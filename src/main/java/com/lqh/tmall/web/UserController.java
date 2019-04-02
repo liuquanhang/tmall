@@ -15,9 +15,11 @@ public class UserController {
     UserService userService;
 
     @GetMapping("/users")
-    public Page4Navigator<User> list(@RequestParam(value = "start",defaultValue = "0")int start, @RequestParam(value = "size",defaultValue = "5")int size){
-        start = start<0?0:start;
+    public Page4Navigator<User> list(@RequestParam(value = "start", defaultValue = "0") int start, @RequestParam(value = "size", defaultValue = "5") int size) {
+        start = start < 0 ? 0 : start;
         Page4Navigator<User> page = userService.list(start, size, 5);
         return page;
     }
+
+
 }

@@ -1,38 +1,38 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 
-<head th:include="include/admin/adminHeader::html('用户管理')" ></head>
+<head th:include="include/admin/adminHeader::html('用户管理')"></head>
 <body>
-<div th:replace="include/admin/adminNavigator::html" ></div>
+<div th:replace="include/admin/adminNavigator::html"></div>
 <script>
-    $(function(){
+    $(function () {
 
         var data4Vue = {
-            uri:'users',
+            uri: 'users',
             beans: [],
-            pagination:{}
+            pagination: {}
         };
 
         //ViewModel
         var vue = new Vue({
             el: '#workingArea',
             data: data4Vue,
-            mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+            mounted: function () { //mounted　表示这个 Vue 对象加载成功了
                 this.list(0);
             },
             methods: {
-                list:function(start){
-                    var url =  this.uri+ "?start="+start;
-                    axios.get(url).then(function(response) {
+                list: function (start) {
+                    var url = this.uri + "?start=" + start;
+                    axios.get(url).then(function (response) {
                         vue.pagination = response.data;
-                        vue.beans = response.data.content	;
+                        vue.beans = response.data.content;
                     });
                 },
-                jump: function(page){
-                    jump(page,vue); //定义在adminHeader.html 中
+                jump: function (page) {
+                    jump(page, vue); //定义在adminHeader.html 中
                 },
-                jumpByNumber: function(start){
-                    jumpByNumber(start,vue);
+                jumpByNumber: function (start) {
+                    jumpByNumber(start, vue);
                 }
             }
         });
@@ -40,8 +40,8 @@
 
 </script>
 
-<div id="workingArea" >
-    <h1 class="label label-info" >用户管理</h1>
+<div id="workingArea">
+    <h1 class="label label-info">用户管理</h1>
     <br>
     <br>
 
@@ -64,10 +64,10 @@
         </table>
     </div>
 
-    <div th:replace="include/admin/adminPage::html" ></div>
+    <div th:replace="include/admin/adminPage::html"></div>
 
 </div>
 
-<div th:replace="include/admin/adminFooter::html" ></div>
+<div th:replace="include/admin/adminFooter::html"></div>
 </body>
 </html>

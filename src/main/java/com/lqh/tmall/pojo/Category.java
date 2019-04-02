@@ -8,12 +8,12 @@ import java.io.Serializable;
 import java.util.List;
 
 @Entity
-@Table(name="category")
-@JsonIgnoreProperties({"handler","hibernateLazyInitializer"})
+@Table(name = "category")
+@JsonIgnoreProperties({"handler", "hibernateLazyInitializer"})
 public class Category implements Serializable {
     @Id
-    @GeneratedValue(strategy= GenerationType.IDENTITY)
-    @Column(name="id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     int id;
 
     String name;

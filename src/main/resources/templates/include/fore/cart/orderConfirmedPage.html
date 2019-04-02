@@ -1,20 +1,20 @@
 <div th:fragment="html">
     <script>
-        $(function(){
+        $(function () {
             var oid = getUrlParms("oid");
             var data4Vue = {
-                uri:'foreorderConfirmed'
+                uri: 'foreorderConfirmed'
             };
             //ViewModel
             var vue = new Vue({
                 el: '#workingArea',
                 data: data4Vue,
-                mounted:function(){ //mounted　表示这个 Vue 对象加载成功了
+                mounted: function () { //mounted　表示这个 Vue 对象加载成功了
                     this.load();
                 },
                 methods: {
-                    load:function(){
-                        var url =  this.uri+"?oid="+oid;
+                    load: function () {
+                        var url = this.uri + "?oid=" + oid;
                         axios.get(url);
                     }
                 }

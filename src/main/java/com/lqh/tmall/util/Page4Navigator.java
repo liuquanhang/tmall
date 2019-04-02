@@ -38,7 +38,7 @@ public class Page4Navigator<T> implements Serializable {
         //这个空的分页是为了 Redis 从 json格式转换为 Page4Navigator 对象而专门提供的
     }
 
-    public Page4Navigator(Page<T> pageFromJPA,int navigatePages){
+    public Page4Navigator(Page<T> pageFromJPA, int navigatePages) {
         this.pageFormJPA = pageFromJPA;
 
         this.navigatePages = navigatePages;
@@ -63,39 +63,40 @@ public class Page4Navigator<T> implements Serializable {
 
         isHasNext = pageFromJPA.hasNext();
 
-        isHasPrevious  = pageFromJPA.hasPrevious();
+        isHasPrevious = pageFromJPA.hasPrevious();
 
         calNavigatepageNums();
     }
-    private void calNavigatepageNums(){
+
+    private void calNavigatepageNums() {
         int navigatePageNums[];
         int totalPages = getTotalPages();
         int num = getNumber();
         //当总页数小于或等于导航页码数时
-        if(totalPages<=navigatePages){
+        if (totalPages <= navigatePages) {
             navigatePageNums = new int[totalPages];
-            for(int i=0;i<totalPages;i++){
-                navigatePageNums[i] = i+1;
+            for (int i = 0; i < totalPages; i++) {
+                navigatePageNums[i] = i + 1;
             }
-        }else{//当总页数大于导航页码数
+        } else {//当总页数大于导航页码数
             navigatePageNums = new int[navigatePages];
-            int startNum = num = navigatePages/2;
-            int endNum = num + navigatePages/2;
-            if(startNum<1){
+            int startNum = num = navigatePages / 2;
+            int endNum = num + navigatePages / 2;
+            if (startNum < 1) {
                 startNum = 1;
                 //(最前navigatePages页
-                for(int i = 0;i<navigatePages;i++){
+                for (int i = 0; i < navigatePages; i++) {
                     navigatePageNums[i] = startNum++;
                 }
-            }else if(endNum>totalPages){
+            } else if (endNum > totalPages) {
                 endNum = totalPages;
                 //最后navigatePages页
-                for(int i = navigatePages -1;i>=0;i--){
+                for (int i = navigatePages - 1; i >= 0; i--) {
                     navigatepageNums[i] = endNum--;
                 }
-            }else{
+            } else {
                 //所有中间页
-                for(int i = 0;i<navigatePages;i++){
+                for (int i = 0; i < navigatePages; i++) {
                     navigatepageNums[i] = startNum++;
                 }
             }
