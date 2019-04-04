@@ -12,9 +12,37 @@ tmall_springboot
     elasticsearch实现搜索功能，可实现重复条件搜索无需访问数据库。
     预计加入nginx反向代理。
     实现后台分类展示商品，添加和修改商品，包括上传商品图片。添加和修改商品属性，查看用户列表等。
+Result类用来向前端返回json对象信息，实现了restful的设计风格,使代码更加整齐。
+```java
+public class Result {
 
-本网站的登陆功能包括前台用户和后台管理员登陆，所采用的实现方式是编写一个用户realm和一个管理员realm,继承
-实现后台管理员登陆的realm.........
+    private static int SUCCESS_CODE = 0;
+    private static int FAIL_CODE = 1;
+
+    private int code;
+    private String message;
+    private Object data;
+
+    private Result(int code, String message, Object data) {
+        this.code = code;
+        this.message = message;
+        this.data = data;
+    }
+
+    public static Result success() {
+        return new Result(SUCCESS_CODE, null, null);
+    }
+
+    public static Result success(Object data) {
+        return new Result(SUCCESS_CODE, "", data);
+    }
+
+    public static Result fail(String message) {
+        return new Result(FAIL_CODE, message, null);
+    }
+
+```
+本网站的登陆功能包括前台用户和后台管理员登陆。
 
 管理员realm（这里我没有加入登陆功能,而是在数据库中直接加入管理员账号后再登陆时生成salt，加密密码后覆盖原来的数据库中密码）
 ```java
