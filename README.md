@@ -3,7 +3,7 @@ tmall_springboot
 简介
 --------------------
     使用springboot模仿天猫网站
-    本网站采用spring,springMVC,springboot框架。数据层采用JPA。
+    采用spring,springMVC,springboot框架。数据层采用JPA。
     数据库采用mysql。
     redis作为缓存服务器。
     前端采用html, CSS, Javascript, JSON, AJAX, JQuery ,Bootstrap, Vue等。
@@ -12,6 +12,7 @@ tmall_springboot
     elasticsearch实现搜索功能，可实现重复条件搜索无需访问数据库。
     预计加入nginx反向代理。
     实现后台分类展示商品，添加和修改商品，包括上传商品图片。添加和修改商品属性，查看用户列表等。
+-----------------------------
 Result类用来向前端返回json对象信息，实现了restful的设计风格,使代码更加整齐。
 ```java
 public class Result {
@@ -193,6 +194,7 @@ public enum LoginType {
 我选择的策略为FirstSuccessfulStrategy，只有一个realm生效即可。
 
 ```java
+    @Bean
     public CustomizedModularRealmAuthenticator modularRealmAuthenticator(){
         CustomizedModularRealmAuthenticator modularRealmAuthenticator = new CustomizedModularRealmAuthenticator();
         modularRealmAuthenticator.setAuthenticationStrategy(new FirstSuccessfulStrategy());
@@ -200,7 +202,7 @@ public enum LoginType {
     }
 ```
 
-在Controller中就可以根据登陆类型不同进行处理
+在Controller中就可以根据登陆类型不同进行处理,以AdminController为例：
 
 ```java
     private static final String USER_LOGIN_TYPE = LoginType.USER.toString();
