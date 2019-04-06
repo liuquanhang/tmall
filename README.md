@@ -189,16 +189,20 @@ public enum LoginType {
         return securityManager;
     }
 ```
+
 我选择的策略为FirstSuccessfulStrategy，只有一个realm生效即可。
+
 ```java
     public CustomizedModularRealmAuthenticator modularRealmAuthenticator(){
         CustomizedModularRealmAuthenticator modularRealmAuthenticator = new CustomizedModularRealmAuthenticator();
         modularRealmAuthenticator.setAuthenticationStrategy(new FirstSuccessfulStrategy());
         return modularRealmAuthenticator;
     }
-    ```
-    在Controller中就可以根据登陆类型不同进行处理
-    ```java
+```
+
+在Controller中就可以根据登陆类型不同进行处理
+
+```java
     private static final String USER_LOGIN_TYPE = LoginType.USER.toString();
     
     @PostMapping("/forelogin")
@@ -224,4 +228,4 @@ public enum LoginType {
             return Result.success("已登陆");
         }
     }
-    ```
+```
