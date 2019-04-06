@@ -10,8 +10,7 @@ tmall_springboot
     restful风格设计，采用axios实现前后端数据传输。
     采用shiro实现登陆功能.
     elasticsearch实现搜索功能，可实现重复条件搜索无需访问数据库。
-    预计加入nginx反向代理。
-    实现后台分类展示商品，添加和修改商品，包括上传商品图片。添加和修改商品属性，查看用户列表等。
+    前台为包括用户登陆、首页、商品详情页和支付页面等。后台分类展示商品，添加和修改商品，包括上传商品图片。添加和修改商品属性，查看用户列表等。
 -----------------------------
 Result类用来向前端返回json对象信息，实现了restful的设计风格,使代码更加整齐。
 ```java
@@ -230,4 +229,44 @@ public enum LoginType {
             return Result.success("已登陆");
         }
     }
+```
+最后还要根据不同的请求路径配置路径拦截类，在WebMvcConfigurer中配置这些拦截器。
+
+前台购物车功能也是基于Interceptor实现的：
+```java
+public class OtherInterceptor implements HandlerInterceptor {
+    @Autowired
+    CategoryService categoryService;
+    @Autowired
+    OrderItemService orderItemService;
+
+    @Override
+    public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        return true;
+    }
+
+    @Override
+    public void postHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, ModelAndView modelAndView) throws Exception {
+        HttpSession session = httpServletRequest.getSession();
+        User user = (User) session.getAttribute("user");
+        int cartTotalItemNumber = 0;
+        if (user != null) {
+            List<OrderItem> ois = orderItemService.listByUser(user);
+            for (OrderItem orderItem : ois) {
+                cartTotalItemNumber += orderItem.getNumber();
+            }
+        }
+        List<Category> cs = categoryService.list();
+        String contextPath = httpServletRequest.getServletContext().getContextPath();
+        //把分类list存放在servlet上下文中
+        httpServletRequest.getServletContext().setAttribute("categories_below_search", cs);
+        session.setAttribute("cartTotalNumber", cartTotalItemNumber);   //购物车数量保存在session中
+        httpServletRequest.getServletContext().setAttribute("contextPath", contextPath);
+    }
+
+    @Override
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+
+    }
+}
 ```
