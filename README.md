@@ -270,3 +270,65 @@ public class OtherInterceptor implements HandlerInterceptor {
     }
 }
 ```
+
+在service层的修改数据库方法上加入事务注解，当出现异常时可进行回滚.Propagation.REQUIRED是事务的传播行为：如果当前没有事务，就新建一个事务，如果已经存在一个事务中，加入到这个事务中。
+@CacheEvict注解是在该调用方法时删除redis缓存中的所有数据，避免下次服务器读取到过时的数据。@Cacheable则是向缓存中保存查询到的数据，这样就不用重复器数据库中读取。
+```java
+    @CacheEvict(allEntries = true)
+    @Transactional(propagation = Propagation.REQUIRED, rollbackForClassName = "Exception")
+    public float add(Order order, List<OrderItem> ois) {  //计算订单总价
+        float total = 0;
+        add(order);
+        if (false) {
+            throw new RuntimeException();
+        } else {
+            for (OrderItem oi : ois) {
+                oi.setOrder(order);
+                orderItemService.update(oi);
+                total += oi.getProduct().getPromotePrice() * oi.getNumber();
+            }
+        }
+        return total;
+    }
+```
+前台商品排序功能的实现：
+首先为商品类实现一个比较器
+```java
+public class ProductSaleCountComparator implements Comparator<Product> {
+    @Override
+    public int compare(Product o1, Product o2) {
+        return o2.getSaleCount() - o1.getSaleCount();
+    }
+}
+```
+controller的代码如下：
+```java
+@GetMapping("forecategory/{cid}")
+    public Object category(@PathVariable int cid, String sort) {
+        Category category = categoryService.get(cid);
+        productService.fill(category);
+        productService.setSaleAndReviewNumber(category.getProducts());
+        categoryService.removeCategoryFromProduct(category);
+        if (sort != null) {
+            switch (sort) {
+                case "review":
+                    Collections.sort(category.getProducts(), new ProductReviewComparator());
+                    break;
+                case "date":
+                    Collections.sort(category.getProducts(), new ProductDateComparator());
+                    break;
+                case "saleCount":
+                    Collections.sort(category.getProducts(), new ProductSaleCountComparator());
+                    break;
+                case "price":
+                    Collections.sort(category.getProducts(), new ProductPriceComparator());
+                    break;
+                case "all":
+                    Collections.sort(category.getProducts(), new ProductAllComparator());
+                    break;
+                    default:
+            }
+        }
+        return category;
+    }
+```
