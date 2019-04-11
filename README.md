@@ -3,7 +3,7 @@ tmall_springboot
 简介
 --------------------
     使用springboot模仿天猫网站
-    采用spring,springMVC,springboot框架。数据层采用JPA。
+    采用spring,hibernate，springboot框架。数据层采用JPA。
     数据库采用mysql。
     redis作为缓存服务器。
     前端采用html, CSS, Javascript, JSON, AJAX, JQuery ,Bootstrap, Vue等。
@@ -46,7 +46,7 @@ public class Result {
     }
 
 ```
-本网站的登陆功能包括前台用户和后台管理员登陆。
+本网站的登陆功能包括前台用户和后台管理员登陆。用户和管理员通过不同的页面和登陆验证策略。
 
 管理员realm（这里我没有加入登陆功能,而是在数据库中直接加入管理员账号后再登陆时生成salt，加密密码后覆盖原来的数据库中密码）
 ```java
